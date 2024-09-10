@@ -1,0 +1,69 @@
+readme:
+  name: Buto-Plugin-ServerfilesClient
+  description: |
+    - Get, add, delete, list files from a file server using plugin serverfiles/server.
+  item:
+    -
+      name: Usage
+      description: |
+        ````
+        wfPlugin::includeonce('serverfiles/client');
+        $client = new PluginServerfilesClient();
+        ````
+        ````
+        $data = new PluginWfArray();
+        $data->set('host', 'http://-my-file-server');
+        $data->set('folder', '/any_folder');
+        ````
+        Both host and folder must be set up properly on file server.
+        Check out readme for that plugin.
+        Param folder is relative to application root folder.
+    -
+      name: Methods
+      item:
+        -
+          name: get_file
+          description: |
+            Set filename.
+            ````
+            $data->set('filename', 'test.jpg');
+            ````
+            ````
+            if(true){
+              wfHelp::print($client->get_file($data->get()));
+            }else{
+              $result = $client->get_file($data->get());
+              if($result['file_exist']){
+                header("Content-type: ".$result['content-type']);
+                exit(base64_decode($result['content']));
+              }else{
+                exit('no file');
+              }
+            }
+            ````
+        -
+          name: get_folder
+          description: |
+            ````
+            wfHelp::print($client->get_folder($data->get()));
+            ````
+        -
+          name: set_file
+          description: |
+            Get content and set filename.
+            ````
+            $content = wfFilesystem::getContents('/plugin/serverfiles/demo/test.jpg');
+            $data->set('filename', 'test.jpg');
+            $data->set('content', base64_encode($content));
+            wfHelp::print($client->set_file($data->get()));
+            ````
+        -
+          name: delete_file
+          description: |
+            Set filename.
+            ````
+            $data->set('filename', 'test.jpg');
+            ````
+            ````
+            wfHelp::print($client->delete_file($data->get()));
+            ````
